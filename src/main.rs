@@ -1,4 +1,5 @@
 mod pong;
+mod systems;
 
 use crate::pong::Pong;
 
@@ -9,8 +10,12 @@ use amethyst::{
         types::DefaultBackend,
         RenderingBundle,
     },
+    
     utils::application_root_dir,
 };
+use amethyst::input::{InputBundle, StringBindings};
+use amethyst::core::transform::TransformBundle;
+
 
 
 
@@ -21,8 +26,14 @@ fn main() -> amethyst::Result<()> {
     // Set config
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("config").join("display.ron");
+    let binding_path = app_root.join("config").join("bindings.ron");
+
+    let input_bundle = InputBundle::<StringBindings>::new().with_bindings_from_file(binding_path)?;
 
     let game_data = GameDataBuilder::default()
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(input_bundle)?
+        .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 // The RenderToWindow plugin provides all the scaffolding for opening a window and drawing on it
