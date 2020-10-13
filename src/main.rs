@@ -17,6 +17,7 @@ use amethyst::{
 use amethyst::input::{InputBundle, StringBindings};
 use amethyst::core::transform::TransformBundle;
 use amethyst::ui::{RenderUi, UiBundle};
+use amethyst::audio::AudioBundle;
 
 
 fn main() -> amethyst::Result<()> {
@@ -34,6 +35,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<StringBindings>::new())?
+        .with_bundle(AudioBundle::default())?
         .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with(systems::MoveBallsSystem, "ball_system", &[])
         .with(systems::BounceSystem, "collision_system",&["paddle_system", "ball_system"])
