@@ -1,8 +1,19 @@
 use amethyst::{
     assets::Loader,
-    audio::{OggFormat, SourceHandle},
+    audio::{OggFormat, SourceHandle,},
     ecs::{World, WorldExt},
 };
+use amethyst::{
+    assets::AssetStorage,
+    audio::{output::Output, Source},
+};
+pub fn play_bounce_sound(sounds: &Sounds, storage: &AssetStorage<Source>, output: Option<&Output>) {
+    if let Some(ref output) = output.as_ref() {
+        if let Some(sound) = storage.get(&sounds.bounce_sfx) {
+            output.play_once(sound, 1.0);
+        }
+    }
+}
 
 const BOUNCE_SOUND: &str = "audio/bounce.ogg";
 const SCORE_SOUND: &str = "audio/score.ogg";
