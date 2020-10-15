@@ -7,9 +7,18 @@ use amethyst::{
     assets::AssetStorage,
     audio::{output::Output, Source},
 };
+
 pub fn play_bounce_sound(sounds: &Sounds, storage: &AssetStorage<Source>, output: Option<&Output>) {
     if let Some(ref output) = output.as_ref() {
         if let Some(sound) = storage.get(&sounds.bounce_sfx) {
+            output.play_once(sound, 1.0);
+        }
+    }
+}
+
+pub fn play_score_sound(sounds: &Sounds, storage: &AssetStorage<Source>, output: Option<&Output>) {
+    if let Some(ref output) = output.as_ref() {
+        if let Some(sound) = storage.get(&sounds.score_sfx) {
             output.play_once(sound, 1.0);
         }
     }
